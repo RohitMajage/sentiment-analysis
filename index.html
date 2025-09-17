@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multilingual Twitter Sentiment (LSTM vs BERT)</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <meta name="description" content="Static demo: multilingual sentiment analysis of tweets using LSTM (tfjs) and BERT (Transformers.js) in the browser." />
+</head>
+<body>
+    <header>
+        <h1>Sentiment Analysis of Multilingual Twitter Data</h1>
+        <p>Analyze sentiments on CSV tweets with an on-device LSTM model. 100% in-browser.</p>
+    </header>
+
+    <main>
+        <section class="controls">
+            <div class="upload">
+                <label for="csvInput" class="btn">Upload CSV</label>
+                <input id="csvInput" type="file" accept=".csv" />
+                <button id="loadSample" class="link">Load sample.csv</button>
+                <button id="helpBtn" class="link">Help</button>
+            </div>
+
+            <div class="options">
+                
+                <label>
+                    <input type="checkbox" id="useLstm" checked />
+                    Use LSTM (tfjs)
+                </label>
+                
+                <label>
+                    Language handling:
+                    <select id="langMode">
+                        <option value="auto" selected>Auto-detect</option>
+                        <option value="as_is">No detection</option>
+                    </select>
+                </label>
+                <label>
+                    Max rows:
+                    <input id="maxRows" type="number" min="1" step="1" value="200" style="width:90px" />
+                </label>
+            </div>
+
+            <div class="filters">
+                <label>
+                    Language:
+                    <select id="langFilter">
+                        <option value="">All</option>
+                    </select>
+                </label>
+                <label>
+                    Search:
+                    <input id="textFilter" type="text" placeholder="Find text..." style="width:220px" />
+                </label>
+                <button id="clearFilters" class="btn">Clear</button>
+            </div>
+
+            <div class="actions">
+                <button id="runBtn" class="primary">Analyze Sentiment</button>
+                <span id="status" class="status">Idle</span>
+                <progress id="progress" max="100" value="0" style="width:160px; display:none;"></progress>
+                <button id="exportBtn" class="btn" disabled>Export CSV</button>
+                <button id="stopBtn" class="btn" disabled>Stop</button>
+            </div>
+        </section>
+
+        <section class="summary">
+            <div class="summary-cards">
+                <div class="card">
+                    <h3>LSTM Summary</h3>
+                    <div class="counts" id="lstmCounts">—</div>
+                    <canvas id="lstmChart" height="120"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="results">
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Text</th>
+                        <th>Language</th>
+                        <th>LSTM Label</th>
+                        <th>LSTM Confidence</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+
+    
+
+    <!-- Vendors -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/langdetect-lite@2.0.1/dist/langdetect.min.js"></script>
+    <!-- TensorFlow.js (for LSTM) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+    <!-- Transformers.js (for BERT) -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@xenova/transformers@3.0.1"></script>
+    <!-- Chart.js for simple charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- App -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
+
+
